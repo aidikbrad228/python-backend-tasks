@@ -15,3 +15,6 @@ if __name__ == "__main__":
     assert sort_string("backdsts") == "abcdksst"
     assert sort_string("") == ""
     assert sort_string("a") == "a"
+    assert sort_string("bA") == "Ab"
+    assert sort_string("b a") == " ab"
+    assert sort_string("hello, World!") == " !,Wdehllloor"
