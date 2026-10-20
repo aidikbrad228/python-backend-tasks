@@ -68,3 +68,7 @@ if __name__ == "__main__":
         assert is_pal(result), (s, result)
         assert result in s, (s, result)
         assert len(result) == brute_force_len(s), (s, result)
+
+    print("Все тесты пройдены")
+    for sample in ("babad", "cbbd", "a", "ac"):
+        print(f'longest_palindrome("{sample}") = "{longest_palindrome(sample)}"')
