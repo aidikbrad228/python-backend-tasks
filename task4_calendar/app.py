@@ -125,7 +125,8 @@ def render_page(year: int, month: int, today: date) -> str:
         </div>
     </div>
 </body>
-</html>"""
+</html>
+"""
 
 
 STATIC_FILES = {
