@@ -22,3 +22,13 @@ def longest_palindrome(s: str) -> str:
             right += 1
 
         return right - left - 1
+
+    for i in range(len(s)):
+        odd = expand(i, i)
+        even = expand(i, i + 1)
+        length = max(odd, even)
+        if length > best_len:
+            best_len = length
+            start = i - (length - 1) // 2
+
+    return s[start:start + best_len]
