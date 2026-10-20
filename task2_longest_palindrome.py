@@ -54,3 +54,9 @@ if __name__ == "__main__":
     assert longest_palindrome("abacdfgdcaba") == "aba"
     assert longest_palindrome("forgeeksskeegfor") == "geeksskeeg"
     assert longest_palindrome("Aa") in ("A", "a")
+
+    assert longest_palindrome("aaaa") == "aaaa"
+    assert longest_palindrome("racecar") == "racecar"
+    assert longest_palindrome("abacdfgdcaba") == "aba"
+    assert longest_palindrome("forgeeksskeegfor") == "geeksskeeg"
+    assert longest_palindrome("Aa") in ("A", "a")
