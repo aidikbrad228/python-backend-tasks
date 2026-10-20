@@ -61,3 +61,68 @@ def parse_period(query: dict, today: date):
     if not (MIN_YEAR <= year <= MAX_YEAR and 1 <= month <= 12):
         return today.year, today.month
     return year, month
+
+
+def _nav_link(css_class: str, target) -> str:
+    if target is None:
+        return f'<a class="custom-btn {css_class}"></a>'
+    year, month = target
+    return (f'<a href="/?year={year}&amp;month={month}" '
+            f'class="custom-btn {css_class}"></a>')
+
+
+def render_page(year: int, month: int, today: date) -> str:
+    weeks = build_weeks(year, month)
+    is_current_month = (year, month) == (today.year, today.month)
+
+    rows_html = []
+    for week in weeks:
+        cells = []
+        for column, day in enumerate(week):
+            if day is None:
+                cells.append("<div></div>")
+                continue
+            classes = []
+            if column >= 5:
+                classes.append("fc-weekend")
+            if is_current_month and day == today.day:
+                classes.append("fc-today")
+            class_attr = f' class="{" ".join(classes)}"' if classes else ""
+            cells.append(f'<div{class_attr}><span class="fc-date">{day}</span></div>')
+        rows_html.append('<div class="fc-row">' + "".join(cells) + "</div>")
+
+    head_html = "".join(f"<div>{name}</div>" for name in WEEKDAY_NAMES)
+    prev_link = _nav_link("custom-prev", shift_month(year, month, -1))
+    next_link = _nav_link("custom-next", shift_month(year, month, +1))
+
+    return f"""<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Календарь — {MONTH_NAMES[month]} {year}</title>
+    <link rel="stylesheet" href="/calendar.css">
+</head>
+<body>
+    <div class="custom-calendar-wrap">
+        <div class="custom-inner">
+            <div class="custom-header clearfix">
+                <nav>
+                    {prev_link}
+                    {next_link}
+                </nav>
+                <h2 id="custom-month" class="custom-month">{MONTH_NAMES[month]}</h2>
+                <h3 id="custom-year" class="custom-year">{year}</h3>
+            </div>
+            <div id="calendar" class="fc-calendar-container">
+                <div class="fc-calendar {ROWS_CLASS[len(weeks)]}">
+                    <div class="fc-head">{head_html}</div>
+                    <div class="fc-body">
+                        {"".join(rows_html)}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>"""
