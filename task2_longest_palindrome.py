@@ -60,3 +60,11 @@ if __name__ == "__main__":
     assert longest_palindrome("abacdfgdcaba") == "aba"
     assert longest_palindrome("forgeeksskeegfor") == "geeksskeeg"
     assert longest_palindrome("Aa") in ("A", "a")
+
+    random.seed(1)
+    for _ in range(2000):
+        s = "".join(random.choice("abc") for _ in range(random.randint(0, 14)))
+        result = longest_palindrome(s)
+        assert is_pal(result), (s, result)
+        assert result in s, (s, result)
+        assert len(result) == brute_force_len(s), (s, result)
