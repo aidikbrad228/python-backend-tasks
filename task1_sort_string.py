@@ -22,3 +22,6 @@ if __name__ == "__main__":
     original = "backdsts"
     sort_string(original)
     assert original == "backdsts"
+
+    print("Все тесты пройдены")
+    print(f'sort_string("backdsts") = "{sort_string("backdsts")}"')
