@@ -14,3 +14,11 @@ def longest_palindrome(s: str) -> str:
         return s
 
     start, best_len = 0, 1
+    
+    def expand(left: int, right: int) -> int:
+
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+
+        return right - left - 1
