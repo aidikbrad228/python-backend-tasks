@@ -32,3 +32,19 @@ def longest_palindrome(s: str) -> str:
             start = i - (length - 1) // 2
 
     return s[start:start + best_len]
+
+
+if __name__ == "__main__":
+    import random
+
+    def is_pal(t: str) -> bool:
+        return t == t[::-1]
+
+    def brute_force_len(s: str) -> int:
+        """Эталон: перебор всех подстрок. Нужен только для проверки."""
+        best = 0
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                if j - i + 1 > best and is_pal(s[i:j + 1]):
+                    best = j - i + 1
+        return best
