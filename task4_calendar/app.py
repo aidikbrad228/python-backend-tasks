@@ -126,3 +126,49 @@ def render_page(year: int, month: int, today: date) -> str:
     </div>
 </body>
 </html>"""
+
+
+STATIC_FILES = {
+    "/calendar.css": ("calendar.css", "text/css; charset=utf-8"),
+    "/fonts/fontawesome-selected.woff": (
+        os.path.join("fonts", "fontawesome-selected.woff"), "font/woff"),
+}
+
+
+class CalendarHandler(BaseHTTPRequestHandler):
+    def _send(self, status: int, content_type: str, body: bytes, cache: str = "no-store"):
+        self.send_response(status)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", cache)
+        self.end_headers()
+        self.wfile.write(body)
+
+    def do_GET(self):
+        url = urlparse(self.path)
+
+        if url.path == "/":
+            year, month = parse_period(parse_qs(url.query), date.today())
+            html = render_page(year, month, date.today())
+            self._send(200, "text/html; charset=utf-8", html.encode("utf-8"))
+        elif url.path in STATIC_FILES:
+            filename, content_type = STATIC_FILES[url.path]
+            with open(os.path.join(BASE_DIR, filename), "rb") as f:
+                self._send(200, content_type, f.read(), cache="max-age=3600")
+        else:
+            self._send(404, "text/plain; charset=utf-8", "Страница не найдена".encode("utf-8"))
+
+
+def make_server(port: int = 8000, host: str = "127.0.0.1") -> ThreadingHTTPServer:
+    return ThreadingHTTPServer((host, port), CalendarHandler)
+
+
+if __name__ == "__main__":
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
+    server = make_server(port)
+    print(f"Календарь запущен: http://127.0.0.1:{port}  (Ctrl+C — остановить)")
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nОстановлено")
+        server.server_close()
