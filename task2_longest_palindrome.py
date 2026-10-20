@@ -48,3 +48,9 @@ if __name__ == "__main__":
                 if j - i + 1 > best and is_pal(s[i:j + 1]):
                     best = j - i + 1
         return best
+
+    assert longest_palindrome("aaaa") == "aaaa"
+    assert longest_palindrome("racecar") == "racecar"
+    assert longest_palindrome("abacdfgdcaba") == "aba"
+    assert longest_palindrome("forgeeksskeegfor") == "geeksskeeg"
+    assert longest_palindrome("Aa") in ("A", "a")
