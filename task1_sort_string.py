@@ -8,3 +8,10 @@ def sort_string(s: str) -> str:
     sorted() создаёт новый список).
     """
     return "".join(sorted(s))
+
+
+if __name__ == "__main__":
+ 
+    assert sort_string("backdsts") == "abcdksst"
+    assert sort_string("") == ""
+    assert sort_string("a") == "a"
